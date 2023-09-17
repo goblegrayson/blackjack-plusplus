@@ -1,12 +1,14 @@
 ﻿// card.cpp : Defines the classes for Blackjack cards.
 //
 
-#include "card.hpp"
+#include "engine.hpp"
 
 using namespace std;
 
-void card::hello(){
-	string hwStr = "Hello World!";
-	cout << hwStr << endl;
-	_sleep(5000);
+engine::Card::Card(engine::Suit suit, int rank): suit(suit), rank(rank) {};
+
+void engine::Card::print() {
+	cout << rank << " of " << suit << "\n";
 };
+
+

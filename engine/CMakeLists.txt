@@ -8,7 +8,8 @@ add_subdirectory ("test")
 
 # create target
 add_library(
-    card STATIC
+    engine STATIC
     card.cpp
-    card.hpp
+    shoe.cpp
+    engine.hpp
 )

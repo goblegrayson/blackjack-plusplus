@@ -1,3 +1,4 @@
 #pragma once
 
-#include "card.cpp"
+#include "catch_amalgamated.hpp"
+#include "engine.hpp"
