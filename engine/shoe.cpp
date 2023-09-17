@@ -44,4 +44,5 @@ void engine::Shoe::shuffle(uint64_t seed) {
 	else {
 		cout << "Shuffling with Seed!" << "\n";
 	}
+	// Implement a Thorp Shuffle [Ref. 1]
 };
