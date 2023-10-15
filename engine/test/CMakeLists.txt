@@ -1,5 +1,4 @@
-﻿# TODO: Add tests and install targets if needed.
-# install (TARGETS main DESTINATION "engine/test/bin")
+﻿# Testing library
 
 add_executable (engine-tests
     main.cpp
@@ -9,7 +8,6 @@ add_executable (engine-tests
 )
 
 target_include_directories(engine-tests PUBLIC "../")
-
 target_link_libraries(engine-tests PRIVATE engine)
 
 # Add source to this project's executable.

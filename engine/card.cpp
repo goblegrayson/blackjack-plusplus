@@ -3,12 +3,11 @@
 
 #include "engine.hpp"
 
-using namespace std;
-
 engine::Card::Card(engine::Suit suit, int rank): suit(suit), rank(rank) {};
 
 void engine::Card::print() {
-	cout << rank << " of " << suit << "\n";
+	std::cout << engine::rankMap.find(rank)->second << " of " << engine::suitMap.find(suit)->second << "\n";
+	/*cout << rank << " of " << suit << "\n";*/
 };
 
 

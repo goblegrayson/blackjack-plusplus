@@ -9,7 +9,7 @@ int main(int argc, char* const argv[]) {
 
     while (true);
     return result;
-}
+};
 
 // Test Cards
 TEST_CASE("Cards construct properly", "[Card]") {
@@ -17,7 +17,7 @@ TEST_CASE("Cards construct properly", "[Card]") {
     Card.print();
     REQUIRE(Card.rank == 13);
     REQUIRE(Card.suit == engine::Suit::Spades);
-}
+};
 
 // Test Shoe
 TEST_CASE("Single deck builds properly", "[Shoe]") {
@@ -38,11 +38,7 @@ TEST_CASE("Single deck builds properly", "[Shoe]") {
             iCard++;
         };
     }
-    // Check the cards shuffle as expected
-    uint64_t seed = Catch::rngSeed();
-    Shoe.shuffle();
-    Shoe.shuffle(seed);
-}
+};
 
 TEST_CASE("Shoe constructs properly", "[Shoe]") {
     engine::Shoe Shoe(2);
@@ -52,5 +48,15 @@ TEST_CASE("Shoe constructs properly", "[Shoe]") {
     REQUIRE(Shoe.getNumCardsRemaining() == Shoe.n_decks * 52);
     // Check the shoe shuffles as expected
 
-}
+};
+
+TEST_CASE("Shoe shuffles properly", "[Shoe]") {
+    engine::Shoe Shoe(2);
+    // Check the shoe shuffles as expected
+    uint64_t seed = Catch::rngSeed();
+    Shoe.shuffle(seed);
+    // Plot the values vs position to visually check the distribution  
+    Shoe.plot();
+};
+
 
