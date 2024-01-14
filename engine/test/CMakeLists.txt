@@ -1,5 +1,4 @@
 ﻿# Testing library
-
 add_executable (engine-tests
     main.cpp
     main.hpp

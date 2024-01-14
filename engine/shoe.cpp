@@ -5,7 +5,7 @@
 
 engine::Shoe::Shoe(int n_decks) : n_decks(n_decks), n_initial(52 * n_decks){
 	// Initialize the cards
-	std::vector<Card> deck = buildDeck();
+	std::vector deck = buildDeck();
 	for (int i_deck = 0; i_deck < n_decks; i_deck++) {
 		cards.insert(end(cards), begin(deck), end(deck));
 	};
@@ -15,7 +15,7 @@ engine::Shoe::Shoe(int n_decks) : n_decks(n_decks), n_initial(52 * n_decks){
 };
 
 void engine::Shoe::print() {
-	std::cout << "Shoe: " << getNumCardsRemaining() << " of " << n_initial << " Remaining\n";
+	std::cout << "Shoe: " << getNumCardsRemaining() << " of " << n_initial << " Remaining" << std::endl;
 };
 
 void engine::Shoe::plot() {
@@ -30,7 +30,7 @@ void engine::Shoe::plot() {
 };
 
 int engine::Shoe::getNumCardsRemaining() {
-	return size(cards);
+	return n_initial - i_nextCard;
 };
 
 std::vector<engine::Card> engine::Shoe::buildDeck() {
@@ -52,7 +52,7 @@ void engine::Shoe::shuffle(uint64_t seed) {
 	// Implement a Thorp Shuffle [Ref. 1]
 	for (int i_round = 1; i_round <= n_shuffles; i_round++) {
 		// Cut somewhere in the middle third of the deck
-		int i_cut = cards.size() / 2;
+		int i_cut = int(cards.size()) / 2;
 		std::vector<engine::Card> leftDeck = {};
 		std::vector<engine::Card> rightDeck = {};
 		for (int i_card = 0; i_card < size(cards); i_card++) {
@@ -88,4 +88,16 @@ int engine::Shoe::chooseRandomInt() {
 	static std::mt19937 generator(rand_dev());
 	std::uniform_int_distribution<int> uid(0, 1);
 	return uid(generator);
+};
+
+engine::Card engine::Shoe::draw() {
+	if (i_nextCard <= n_initial) {
+		engine::Card drawnCard = cards[i_nextCard];
+		i_nextCard++;
+		return drawnCard;
+	}
+	else {
+		throw std::out_of_range("Out of Cards!");
+	};
+	
 };

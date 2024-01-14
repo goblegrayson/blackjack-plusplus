@@ -15,7 +15,6 @@ endif()
 
 # Include sub-projects.
 add_subdirectory ("test")
-add_subdirectory ("rtnormCpp")
 
 # create target
 add_library(
@@ -23,6 +22,11 @@ add_library(
     card.cpp
     shoe.cpp
     engine.hpp
+    player.cpp
+    hand.cpp
+    round.cpp
+    table.cpp
+    strategies.cpp
 )
 target_link_libraries(engine PUBLIC matplot)
 

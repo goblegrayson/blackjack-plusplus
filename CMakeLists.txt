@@ -13,3 +13,11 @@ project ("blackjack-plusplus")
 
 # Include sub-projects.
 add_subdirectory ("engine")
+
+# Make a couple executables for the run scripts
+add_executable (play-round
+    playRound.cpp
+)
+
+target_include_directories(engine PUBLIC "./engine")
+target_link_libraries(play-round PRIVATE engine)
