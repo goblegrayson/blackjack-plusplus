@@ -15,7 +15,7 @@ engine::Shoe::Shoe(int n_decks) : n_decks(n_decks), n_initial(52 * n_decks){
 };
 
 void engine::Shoe::print() {
-	std::cout << "Shoe: " << getNumCardsRemaining() << " of " << n_initial << " Remaining" << std::endl;
+	std::cout << "Shoe: " << numCardsRemaining() << " of " << n_initial << " Remaining" << std::endl;
 };
 
 void engine::Shoe::plot() {
@@ -29,7 +29,7 @@ void engine::Shoe::plot() {
 	matplot::show();
 };
 
-int engine::Shoe::getNumCardsRemaining() {
+int engine::Shoe::numCardsRemaining() {
 	return n_initial - i_nextCard;
 };
 
@@ -80,6 +80,7 @@ void engine::Shoe::shuffle(uint64_t seed) {
 		}
 		// Store the temp deck
 		cards = shuffledDeck;
+		i_nextCard = 0;
 	};
 };
 
@@ -91,13 +92,12 @@ int engine::Shoe::chooseRandomInt() {
 };
 
 engine::Card engine::Shoe::draw() {
-	if (i_nextCard <= n_initial) {
-		engine::Card drawnCard = cards[i_nextCard];
-		i_nextCard++;
-		return drawnCard;
+	if (i_nextCard == n_initial) {
+		// Reshuffle
+		this->shuffle();
 	}
-	else {
-		throw std::out_of_range("Out of Cards!");
-	};
-	
+	// Draw
+	engine::Card drawnCard = cards[i_nextCard];
+	i_nextCard++;
+	return drawnCard;
 };

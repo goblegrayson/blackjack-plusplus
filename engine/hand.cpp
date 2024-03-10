@@ -41,7 +41,7 @@ int engine::Hand::score() {
 		}
 		else if (thisRank == 1) {
 			// Aces
-			if (score > 10) {
+			if (score > 10 && !isDealer) {
 				score += 1;
 			}
 			else {

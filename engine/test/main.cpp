@@ -24,7 +24,7 @@ TEST_CASE("Single deck builds properly", "[Shoe]") {
     Shoe.print();
     // Check card array dimensions are good
     REQUIRE(Shoe.n_decks == 1);
-    REQUIRE(Shoe.getNumCardsRemaining() == Shoe.n_decks * 52);
+    REQUIRE(Shoe.numCardsRemaining() == Shoe.n_decks * 52);
     // Check the cards are in the right place
     int iCard = 0;
     for (int iSuit = engine::Suit::Spades; iSuit <= engine::Suit::Diamonds; iSuit++) {
@@ -44,7 +44,7 @@ TEST_CASE("Shoe constructs properly", "[Shoe]") {
     Shoe.print();
     // Check that a shoe of multiple decks has proper dimensions
     REQUIRE(Shoe.n_decks == 2);
-    REQUIRE(Shoe.getNumCardsRemaining() == Shoe.n_decks * 52);
+    REQUIRE(Shoe.numCardsRemaining() == Shoe.n_decks * 52);
     // Check the shoe shuffles as expected
 
 };
@@ -244,18 +244,19 @@ TEST_CASE("Play a 1 player round where the player splits and wins", "[Round]") {
     engine::Player Dealer(0, std::numeric_limits<float>::max(), nullptr, &engine::alwaysHit); // For now the dealer has a bankroll equal to the max int
     engine::Player Player1(1, bankroll, &engine::always10, &engine::splitOrStand);
     std::vector<engine::Player> Players = { Dealer , Player1 };
+    // Create our table
+    engine::Table Table(Players, 6);
     // Create our shoe and make the first 4 cards the same
-    engine::Shoe Shoe(6);
-    engine::Card FirstCard = Shoe.cards[0];
-    Shoe.cards.insert(Shoe.cards.begin(), FirstCard);
-    Shoe.cards.insert(Shoe.cards.begin(), FirstCard);
-    Shoe.cards.insert(Shoe.cards.begin(), FirstCard);
-    Shoe.cards.insert(Shoe.cards.begin(), FirstCard); // Dealer hits 21 without this lol
+    engine::Card FirstCard = Table.shoe.cards[0];
+    Table.shoe.cards.insert(Table.shoe.cards.begin(), FirstCard);
+    Table.shoe.cards.insert(Table.shoe.cards.begin(), FirstCard);
+    Table.shoe.cards.insert(Table.shoe.cards.begin(), FirstCard);
+    Table.shoe.cards.insert(Table.shoe.cards.begin(), FirstCard); // Dealer hits 21 without this lol
     // Create our round
-    engine::Round Round(Players, Shoe);
+    engine::Round Round(Table);
     // Start the round
     Round.play();
     // Check bankroles
-    Round.players[1].print();
-    REQUIRE(Round.players[1].bankroll == 10030); // The setup here ends up with 2 splits
+    Table.players[1].print();
+    REQUIRE(Table.players[1].bankroll == 10030); // The setup here ends up with 2 splits
 };

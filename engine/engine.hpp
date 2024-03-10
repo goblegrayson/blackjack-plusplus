@@ -39,6 +39,19 @@ namespace  engine {
 		{13, "King"}
 	};
 
+	const std::unordered_map<int, std::string> actionMap = {
+		{0, "Stand"},
+		{1, "Hit"},
+		{2, "Split"},
+		{3, "Double"}
+	};
+
+	// logging structure with fields which corresponds to members in the Player class
+	struct logs {
+		std::vector<float> bankroll;
+		std::vector<float> bet;
+	};
+
 	class Card {
 		public:
 			Suit suit;
@@ -63,7 +76,7 @@ namespace  engine {
 			Shoe(int n_decks);
 			void print();
 			void plot();
-			int getNumCardsRemaining();
+			int numCardsRemaining();
 			std::vector<Card> buildDeck();
 			int chooseRandomInt();
 			void shuffle(uint64_t seed = 0);
@@ -101,8 +114,8 @@ namespace  engine {
 		float bet;
 		std::vector<int> availableActions;
 	};
-	typedef float (*BettingFuncPtr)(roundState roundState);
-	typedef int (*PlayingFuncPtr)(roundState roundState);
+	typedef float (*BettingFuncPtr)(roundState roundState, logs logs);
+	typedef int (*PlayingFuncPtr)(roundState roundState, logs logs);
 
 
 	// Player
@@ -116,6 +129,7 @@ namespace  engine {
 			BettingFuncPtr bettingFunc;
 			PlayingFuncPtr playingFunc;
 			float bankroll;
+			logs logs;
 
 			Player(int playerNumber, float bankroll, BettingFuncPtr bettingFunc, PlayingFuncPtr playingFunc);
 			void print();
@@ -123,48 +137,54 @@ namespace  engine {
 			int playerNumber();
 			void addHand();
 			void makeBet(int iHand, float amount);
-			
-	};
-
-	const std::unordered_map<int, std::string> actionMap = {
-		{0, "Stand"},
-		{1, "Hit"},
-		{2, "Split"},
-		{3, "Double"}
-	};
-
-	// Round
-	class Round {
-	private:
-		bool isStarted_ = false;
-		int i_player;
-		int i_hand;
-
-	public:
-		Shoe shoe;
-		std::vector<Player> players;
-
-		Round(std::vector<Player> players, engine::Shoe shoe);
-		bool isStarted();
-		bool isComplete();
-		void play();
+			void initLogs(int n_rounds);
+			void logRound();	
 	};
 
 	// Table
 	class Table {
 	private:
+		int i_round = 0;
+		int n_decks;
+		int reshuffleAt = 52;
+		void initLogs();
+		void logRound();
 
 	public:
 		std::vector<Player> players;
+		Shoe shoe;
+		int n_rounds = 100;
+
+		Table(std::vector<Player> players, int n_decks);
+		void play();
+	};
+
+	// Round
+	class Round {
+	private:
+		bool isStarted = false;
+		bool isComplete = false;
+		int i_player;
+		int i_hand;
+		Table& table;
+
+	public:
+		Round(Table& table);
+		void play();
+
 	};
 
 	// Betting Strategies
-	float betCLI(roundState roundState);
-	float always10(roundState roundState);
+	float betCLI(roundState roundState, logs logs);
+	float always10(roundState roundState, logs logs);
+	float simpleMartingale(roundState roundState, logs logs);
+	float kellyCriterion(roundState roundState, logs logs);
 
 	// Playing Strategies
-	int playCLI(roundState roundState);
-	int alwaysHit(roundState roundState);
-	int alwaysDouble(roundState roundState);
-	int splitOrStand(roundState roundState);
+	int playCLI(roundState roundState, logs logs);
+	int standardDealer(roundState roundState, logs logs);
+	int alwaysHit(roundState roundState, logs logs);
+	int alwaysDouble(roundState roundState, logs logs);
+	int alwaysStand(roundState roundState, logs logs);
+	int splitOrStand(roundState roundState, logs logs);
 };
