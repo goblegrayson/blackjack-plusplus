@@ -13,9 +13,6 @@ if(NOT matplotplusplus_POPULATED)
     add_subdirectory(${matplotplusplus_SOURCE_DIR} ${matplotplusplus_BINARY_DIR} EXCLUDE_FROM_ALL)
 endif()
 
-# Include sub-projects.
-add_subdirectory ("test")
-
 # create target
 add_library(
     engine STATIC
@@ -32,3 +29,8 @@ target_link_libraries(engine PUBLIC matplot)
 
 # Removing this for now because getting the dependencies built is a whole thing
 # target_link_libraries(engine PRIVATE rtnorm)
+
+# Add source to this project's executable.
+if (CMAKE_VERSION VERSION_GREATER 3.12)
+  set_property(TARGET engine PROPERTY CXX_STANDARD 20)
+endif()

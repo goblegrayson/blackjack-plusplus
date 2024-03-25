@@ -8,19 +8,18 @@ if (POLICY CMP0141)
   cmake_policy(SET CMP0141 NEW)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
+add_compile_options(/EHsc)
 
 project ("blackjack-plusplus")
 
-# Include sub-projects.
-add_subdirectory ("engine")
-target_include_directories(engine PUBLIC "./engine")
+# Include source
+add_subdirectory("src")
+target_include_directories(engine PUBLIC "./src")
 
-# Add the playRound executable
-add_executable (playRound
-    playRound.cpp)
-target_link_libraries(playRound PRIVATE engine)
+# Include tests
+add_subdirectory("tests")
+target_include_directories(engine PUBLIC "./tests")
 
-# Add the StudyRound executable
-add_executable (studyRound
-    studyRound.cpp)
-target_link_libraries(studyRound PRIVATE engine)
+# Include examples
+add_subdirectory("examples")
+target_include_directories(engine PUBLIC "./examples")

@@ -9,7 +9,6 @@ int main(int argc, char* const argv[]) {
     int n_rounds = 1000000000;
     int n_decks = 6;
     // Create our players
-    float bankroll = 10000;
     engine::Player Dealer(0, std::numeric_limits<float>::max(), nullptr, &engine::alwaysHit); // For now the dealer has a bankroll equal to the max int
     engine::Player Player1(1, bankroll, &engine::betCLI, &engine::playCLI);
     std::vector<engine::Player> Players = { Dealer , Player1 };

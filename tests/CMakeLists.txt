@@ -6,7 +6,8 @@ add_executable (engine-tests
     catch_amalgamated.hpp
 )
 
-target_include_directories(engine-tests PUBLIC "../")
+# Include test
+target_include_directories(engine-tests PUBLIC "../src")
 target_link_libraries(engine-tests PRIVATE engine)
 
 # Add source to this project's executable.
